@@ -2,8 +2,8 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { User } from "./types";
 
 export const addUser = createAsyncThunk<
-  User,                    // return type
-  Omit<User, "id">         // argument type (without id)
+  User,                    
+  Omit<User, "id">         
 >(
   "users/addUser",
   async (newUser) => {

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUsers, deleteUser, updateUser } from "../features/users/userThunks";
 import type { RootState, AppDispatch } from "../app/store";
-import { List, Item, DeleteButton, EditButton, SaveButton, EditInput, ButtonGroup } from "./UserList.styles"
+import { List, Item, DeleteButton, EditButton, SaveButton, EditInput, ButtonGroup, LoadingText, ErrorText } from "./UserList.styles"
 
 export const UserList = () => {
   const dispatch = useDispatch<AppDispatch>(); 
@@ -18,8 +18,8 @@ export const UserList = () => {
     dispatch(fetchUsers());
   }, [dispatch]);
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) return <LoadingText>Looaaaddddiiiiing...</LoadingText>;
+  if (error) return <ErrorText>{error}</ErrorText>;
 
   const filteredUsers = users.filter((user) =>
   user.name.toLowerCase().includes(filter.toLowerCase())

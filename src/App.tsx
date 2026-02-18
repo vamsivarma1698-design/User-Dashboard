@@ -32,7 +32,7 @@ function App() {
   return (
     <Page>
       <Container>
-        <Title>👤 User Dashboard 🗃️</Title>
+        <Title>👤 User-Dashboard 🗃️</Title>
         <AddUser />
         <Filter />
         <UserList />

@@ -83,3 +83,20 @@ export const ButtonGroup = styled.div`
   display: flex;
   gap: 12px;
 `;
+
+export const LoadingText = styled.p`
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: #3b82f6;
+  margin-top: 40px;
+  letter-spacing: 1px;
+`;
+
+export const ErrorText = styled.p`
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ef4444;
+  margin-top: 40px;
+`;

@@ -39,7 +39,7 @@ const userSlice = createSlice({
 
 })
 .addCase(fetchUsers.rejected, (state) => {
-  state.loading = true;
+  state.loading = false;
   state.error = "Failed to fetch users";
 })
 
@@ -62,7 +62,13 @@ const userSlice = createSlice({
   state.error =
     action.error.message || "Failed to add user";
 })
+
+// Update User
+.addCase(updateUser.pending, (state) => {
+  state.loading = true;
+})
 .addCase(updateUser.fulfilled, (state, action) => {
+  state.loading = false;
   const index = state.users.findIndex(
     user => user.id === action.payload.id
   );
@@ -76,24 +82,29 @@ const userSlice = createSlice({
     JSON.stringify(state.users)
   );
 })
+ .addCase(updateUser.rejected, (state) => {
+  state.loading = false;
+  state.error = "Failed to Update"
+ })
+
 
     // DELETE USER
-    .addCase(deleteUser.fulfilled, (state, action) => {
-      console.log("Deleting id:", action.payload);
-  console.log("All user ids BEFORE:", state.users.map(u => u.id));
 
-
+    .addCase(deleteUser.pending, (state) => {
+     state.loading = true;
+    })
+    .addCase(deleteUser.fulfilled, (state, action) => {    
+      state.loading = false;  
       state.users = state.users.filter(
         (user) => user.id !== action.payload
       );
-
-      console.log("All user ids AFTER:", state.users.map(u => u.id));
       
       localStorage.setItem(
         "users",
         JSON.stringify(state.users)
       );
-    });
+    })
+    
   },
 });
 
