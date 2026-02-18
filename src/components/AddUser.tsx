@@ -15,12 +15,9 @@ export const AddUser = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    dispatch(
-      addUser({
-        id: Date.now(),
-        name
-      })
-    );
+    if (!name.trim()) return;
+
+    dispatch(addUser({ name }));
 
     setName("");
   };

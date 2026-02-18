@@ -1,10 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import type { User } from "./types";
 
-export const addUser = createAsyncThunk(
+export const addUser = createAsyncThunk<
+  User,                    // return type
+  Omit<User, "id">         // argument type (without id)
+>(
   "users/addUser",
-  async (newUser: User) => {
-    const response = await fetch(
+  async (newUser) => {
+    await fetch(
       "https://jsonplaceholder.typicode.com/users",
       {
         method: "POST",
@@ -13,11 +16,13 @@ export const addUser = createAsyncThunk(
       }
     );
 
-    
-
-    return response.json();
+    return {
+      ...newUser,
+      id: Date.now(), // generate id here
+    };
   }
 );
+
 
 export const deleteUser = createAsyncThunk(
   "users/deleteUser",
@@ -40,5 +45,24 @@ export const fetchUsers = createAsyncThunk(
       "https://jsonplaceholder.typicode.com/users"
     );
     return response.json();
+  }
+);
+
+export const updateUser = createAsyncThunk<
+  User,
+  { id: number; name: string }
+>(
+  "users/updateUser",
+  async ({ id, name }) => {
+    await fetch(
+      `https://jsonplaceholder.typicode.com/users/${id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({ name }),
+        headers: { "Content-type": "application/json" }
+      }
+    );
+
+    return { id, name };
   }
 );

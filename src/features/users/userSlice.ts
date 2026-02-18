@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchUsers, addUser, deleteUser } from "./userThunks";
+import { fetchUsers, addUser, updateUser,deleteUser } from "./userThunks";
 import type { User } from "./types";
 
 interface UsersState {
@@ -39,12 +39,10 @@ const userSlice = createSlice({
 
 })
 .addCase(fetchUsers.rejected, (state) => {
-  state.loading = false;
+  state.loading = true;
   state.error = "Failed to fetch users";
 })
 
-
-  // Add User
   // Add User
 .addCase(addUser.pending, (state) => {
   state.loading = true;
@@ -64,16 +62,37 @@ const userSlice = createSlice({
   state.error =
     action.error.message || "Failed to add user";
 })
+.addCase(updateUser.fulfilled, (state, action) => {
+  const index = state.users.findIndex(
+    user => user.id === action.payload.id
+  );
+
+  if (index !== -1) {
+    state.users[index] = action.payload;
+  }
+
+  localStorage.setItem(
+    "users",
+    JSON.stringify(state.users)
+  );
+})
 
     // DELETE USER
     .addCase(deleteUser.fulfilled, (state, action) => {
+      console.log("Deleting id:", action.payload);
+  console.log("All user ids BEFORE:", state.users.map(u => u.id));
+
+
       state.users = state.users.filter(
         (user) => user.id !== action.payload
       );
+
+      console.log("All user ids AFTER:", state.users.map(u => u.id));
+      
       localStorage.setItem(
         "users",
         JSON.stringify(state.users)
-      )
+      );
     });
   },
 });
